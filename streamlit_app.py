@@ -173,7 +173,7 @@ else:
 reason_list = [reason_symptom0,reason_symptom1,reason_symptom2,reason_symptom3,reason_symptom4,reason_symptom5,reason_symptom6,reason_symptom7,reason_symptom8,reason_symptom9,reason_symptom10,reason_symptom11,reason_symptom12,reason_symptom13,reason_symptom14,reason_symptom15,reason_symptom16,reason_symptom17]
 
 st.write("______________________")
-concurrence_symptom_list = ["悪心", "嘔吐", "音過敏", "光過敏","臭い過敏","目の充血","流涙","鼻閉","鼻漏","眼瞼浮腫","顔面発汗","顔面紅潮","耳閉感","眼瞼下垂","めまい","手足のしびれ","手足の脱力","肩首こり","意識が遠のく"]
+concurrence_symptom_list = ["悪心　はきけ", "嘔吐", "音に過敏になる　うるさい", "光に過敏になる　まぶしい","臭いに過敏になる","目の充血","涙が出る","鼻詰まり","鼻水が出る","まぶたがむくむ、腫れる","顔に汗をかく","顔が赤らむ","耳が詰まった感じ","まぶたが重くなる、下がる","めまい","手足のしびれ","手足の脱力","肩首こり","意識が遠のく"]
 concurrence_symptom_title = '<p style="font-family:sans-serif; color:Black; font-size: 14px;">●以下の様なことが頭痛と一緒に起こることがありますか。すべて選んでください。(複数選択可)</p>'
 st.markdown(concurrence_symptom_title, unsafe_allow_html=True)
 concurrence_symptom0 = st.checkbox(concurrence_symptom_list[0])
@@ -216,9 +216,9 @@ if sign_symptom0 == True:
     sign_symptom8 = st.checkbox(sign_symptom_list[8],value=sign_value,disabled=sign_disabled)
     sign_symptom9 = st.checkbox(sign_symptom_list[9],value=sign_value,disabled=sign_disabled)
     sign_symptom10 = st.checkbox(sign_symptom_list[10],value=sign_value,disabled=sign_disabled,key=11)
-    sign_symptom11 = st.checkbox(sign_symptom_list[11],value=sign_value,disabled=sign_disabled)
-    sign_symptom12 = st.checkbox(sign_symptom_list[12],value=sign_value,disabled=sign_disabled)
-    sign_symptom13 = st.checkbox(sign_symptom_list[13],value=sign_value,disabled=sign_disabled)
+    sign_symptom11 = st.checkbox(sign_symptom_list[11],value=sign_value,disabled=sign_disabled,key=32)
+    sign_symptom12 = st.checkbox(sign_symptom_list[12],value=sign_value,disabled=sign_disabled,key=31)
+    sign_symptom13 = st.checkbox(sign_symptom_list[13],value=sign_value,disabled=sign_disabled,key=51)
     sign_symptom14 = st.checkbox(sign_symptom_list[14],value=sign_value,disabled=sign_disabled,key=15)
     sign_symptom1 = False
     sign_symptom2 = False
@@ -245,16 +245,16 @@ else:
     sign_symptom8 = st.checkbox(sign_symptom_list[8])
     sign_symptom9 = st.checkbox(sign_symptom_list[9])
     sign_symptom10 = st.checkbox(sign_symptom_list[10],key=12)
-    sign_symptom11 = st.checkbox(sign_symptom_list[11])
-    sign_symptom12 = st.checkbox(sign_symptom_list[12])
-    sign_symptom13 = st.checkbox(sign_symptom_list[13])
+    sign_symptom11 = st.checkbox(sign_symptom_list[11],key=33)
+    sign_symptom12 = st.checkbox(sign_symptom_list[12],key=41)
+    sign_symptom13 = st.checkbox(sign_symptom_list[13],key=52)
     sign_symptom14 = st.checkbox(sign_symptom_list[14],key=16)
 
 sign_list = [sign_symptom0,sign_symptom1,sign_symptom2,sign_symptom3,sign_symptom4,sign_symptom5,sign_symptom6,sign_symptom7,sign_symptom8,sign_symptom9,sign_symptom10,sign_symptom11,sign_symptom12,sign_symptom13,sign_symptom14]
 
 st.write("______________________")
 action_symptom_list = ["なにもしない", "横になって休む", "冷やす", "温める","マッサージ","入浴","ストレッチ"]
-action_symptom_title = '<p style="font-family:sans-serif; color:Black; font-size: 14px;">●以下の様なことが頭痛のおこる前触れとしてありますか。すべて選んでください。(複数選択可)</p>'
+action_symptom_title = '<p style="font-family:sans-serif; color:Black; font-size: 14px;">頭痛のとき、どのように対応しますか？すべて選んでください。(複数選択可)</p>'
 st.markdown(action_symptom_title, unsafe_allow_html=True)
 action_symptom0 = st.checkbox(action_symptom_list[0])
 if action_symptom0 == True:
@@ -284,7 +284,7 @@ action_list = [action_symptom0,action_symptom1,action_symptom2,action_symptom3,a
 
 st.write("______________________")
 medicine_check_list = ["飲まない","飲む"]
-medicine_kind_list = ["市販薬","病院鎮痛薬","病院特効薬"]
+medicine_kind_list = ["市販薬","病院鎮痛薬","病院特効薬(レイボー、トリプタン)"]
 medicine_check = st.radio("●頭痛のとき、薬を飲みますか?",medicine_check_list,horizontal=True)
 if medicine_check == "飲む":
     medicine0 = st.checkbox(medicine_kind_list[0])
@@ -306,8 +306,6 @@ for check_list in medicine_effect_list:
         medicine_effect_result.append(1)
     else:
         medicine_effect_result.append(0)
-    
-st.write(medicine_effect_result)
 
 st.write("______________________")
 family_symptom_list = ["父", "母", "配偶者", "子供","兄弟","祖父母"]
