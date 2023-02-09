@@ -7,7 +7,7 @@ import sklearn
 @st.cache
 def convert_df(df):
     # IMPORTANT: Cache the conversion to prevent computation on every rerun
-    return df.to_csv().encode('utf-8_sig')
+    return df.to_csv(index=False).encode('utf-8_sig')
 
 
 st.subheader("仙台頭痛脳神経クリニックAI頭痛診断-ver.00-")
@@ -868,13 +868,15 @@ data = [[
         past_lists[11],
         
         ]]
+
 df = pd.DataFrame(data,columns=column)
-st.write(df)
 
 if st.button("診断結果を表示"):
     model = pickle.load(open("./test.pkl","rb"))
+
     pred = model.predict(data=df)
-    pred_labels = int(np.argmax(pred,axis=1))
+    pred_labels = np.argmax(pred,axis=1)
+    df["診断結果"] = pd.DataFrame(pred_labels)
     
     if pred_labels == 0:
         result = "二次性頭痛"
@@ -886,7 +888,7 @@ if st.button("診断結果を表示"):
     
     df["診断結果"] = result
     df["Diagnosis"] = pred_labels
-     
+    
     csv = convert_df(df)
     st.download_button(
         label="CSVデータダウンロード",
