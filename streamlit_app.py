@@ -10,7 +10,11 @@ def convert_df(df):
     return df.to_csv(index=False).encode('utf-8_sig')
 
 
-st.subheader("仙台頭痛脳神経クリニックAI頭痛診断-ver.00-")
+st.subheader("仙台頭痛脳神経クリニックAI頭痛診断サポート")
+st.write("______________________")
+hospital = st.text_input("●病院名")
+consultation_date = str(st.date_input("●受診日"))
+
 st.write("______________________")
 st.subheader("基本情報")
 gender = st.radio("●性別",["男性", "女性"],horizontal=True)
@@ -451,14 +455,19 @@ else:
 
 medicine_list = [medicine_check_value,medicine0_value,medicine1_value,medicine2_value]
 
-st.write("______________________")
-medicine_effect_list = ["効く","あまり","効かない","効かなく","まちまち"]
-medicine_effect = st.radio("●その薬の効果はどうですか？",medicine_effect_list,horizontal=True)
-medicine_effect_result = list()
-for check_list in medicine_effect_list:
-    if check_list == medicine_effect:
-        medicine_effect_result.append(1)
-    else:
+if medicine_check == "飲む":
+    st.write("______________________")
+    medicine_effect_list = ["効く","あまり効かない","効かない","効かなくなってきた","まちまち"]
+    medicine_effect = st.radio("●その薬の効果はどうですか？",medicine_effect_list,horizontal=True)
+    medicine_effect_result = list()
+    for check_list in medicine_effect_list:
+        if check_list == medicine_effect:
+            medicine_effect_result.append(1)
+        else:
+            medicine_effect_result.append(0)
+else:
+    medicine_effect_result = list()
+    for i in range(5):
         medicine_effect_result.append(0)
 
 st.write("______________________")
@@ -482,7 +491,7 @@ for family in family_list:
 
 st.write("______________________")
 past_symptom_list = ["子供のころよく腹痛があった", "子供のころ乗物酔いをしやすかった", "朝早くに目が覚める", "熟睡感がない","同じ姿勢でいることがおおい","デスクワークがおおい","運動不足","行動を起こすまで時間がかかる、おっくうだ","心配事が多い","喘息といわれた","慢性腎不全といわれた","心臓病といわれた"]
-past_symptom_title = '<p style="font-past:sans-serif; color:Black; font-size: 14px;">●家族・兄弟・親戚に頭痛持ちの人はいますか。すべて選んでください。(複数選択可)</p>'
+past_symptom_title = '<p style="font-past:sans-serif; color:Black; font-size: 14px;">●以下の項目で当てはまるもの全てにチェックしてください。(複数選択可)</p>'
 st.markdown(past_symptom_title, unsafe_allow_html=True)
 past_symptom0 = st.checkbox(past_symptom_list[0])
 past_symptom1 = st.checkbox(past_symptom_list[1])
@@ -869,33 +878,109 @@ data = [[
         
         ]]
 
+st.write("______________________")
+first_diag_list = ["片頭痛MOH","緊張型頭痛","TACs","その他一次性頭痛","二次性頭痛"]
+first_diag = st.radio("●診察医の最初の診断",first_diag_list,horizontal=True)
+
+if first_diag == first_diag_list[0]:
+    first_diag_result = 1
+    first_diag_result2 = first_diag_list[0]
+
+elif first_diag == first_diag_list[1]:
+    first_diag_result = 2
+    first_diag_result2 = first_diag_list[1]
+
+elif first_diag == first_diag_list[2]:
+    first_diag_result = 3
+    first_diag_result2 = first_diag_list[2]
+
+elif first_diag == first_diag_list[3]:
+    first_diag_result = 4
+    first_diag_result2 = first_diag_list[3]
+
+elif first_diag == first_diag_list[4]:
+    first_diag_result = 0
+    first_diag_result2 = first_diag_list[4]
+
 df = pd.DataFrame(data,columns=column)
+
+st.write("______________________")
+
+if "result" not in st.session_state and "pred_labels" not in st.session_state:
+    st.session_state.result = "診断を実行してください"
+    st.session_state.pred_labels = 0
 
 if st.button("診断結果を表示"):
     model = pickle.load(open("./test.pkl","rb"))
 
     pred = model.predict(data=df)
     pred_labels = np.argmax(pred,axis=1)
-    df["診断結果"] = pd.DataFrame(pred_labels)
     
     if pred_labels == 0:
         result = "二次性頭痛"
-        st.info('診断結果：' + result, icon="ℹ️")
     
     elif pred_labels == 1:
         result = "片頭痛MOH"
-        st.info('診断結果：' + result, icon="ℹ️")
     
-    df["診断結果"] = result
-    df["Diagnosis"] = pred_labels
+    elif pred_labels == 2:
+        result = "緊張型頭痛"
     
-    csv = convert_df(df)
-    st.download_button(
-        label="CSVデータダウンロード",
-        data=csv,
-        file_name='診断データ.csv',
-        mime='text/csv',
-    )
+    elif pred_labels == 3:
+        result = "TACs"
+    
+    elif pred_labels == 4:
+        result = "その他一次性頭痛"
+    
+    st.session_state.result = result
+    st.session_state.pred_labels = pred_labels
+
+st.subheader("AI診断結果")
+
+if st.session_state.result == "診断を実行してください":
+    st.info(st.session_state.result, icon="ℹ️")
+else:
+    st.info('診断結果：' + st.session_state.result, icon="ℹ️")
+
+st.write("______________________")
+second_diag_list = ["片頭痛MOH","緊張型頭痛","TACs","その他一次性頭痛","二次性頭痛"]
+second_diag = st.radio("●診察医がAIの結果を見た後の診断",second_diag_list,horizontal=True,key=500)
+
+if second_diag == second_diag_list[0]:
+    second_diag_result = 1
+    second_diag_result2 = second_diag_list[0]
+
+elif second_diag == second_diag_list[1]:
+    second_diag_result = 2
+    second_diag_result2 = second_diag_list[1]
+
+elif second_diag == second_diag_list[2]:
+    second_diag_result = 3
+    second_diag_result2 = second_diag_list[2]
+
+elif second_diag == second_diag_list[3]:
+    second_diag_result = 4
+    second_diag_result2 = second_diag_list[3]
+
+elif second_diag == second_diag_list[4]:
+    second_diag_result = 0
+    second_diag_result2 = second_diag_list[4]
         
+df["AI前_診断結果名称"] = first_diag_result2
+df["AI前_診断結果"] = first_diag_result
+df["AI_診断結果名称"] = st.session_state.result
+df["AI_診断結果"] = st.session_state.pred_labels
+df["AI後_診断結果名称"] = second_diag_result2
+df["AI後_診断結果"] = second_diag_result
+df.insert(0, '病院名', hospital)
+df.insert(1, '受診日', consultation_date)
+st.dataframe(df)
+csv = convert_df(df)
+st.download_button(
+    label="CSVデータダウンロード",
+    data=csv,
+    file_name='診断データ.csv',
+    mime='text/csv',
+)
+    
 
     
