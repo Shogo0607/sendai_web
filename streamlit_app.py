@@ -1,6 +1,14 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
+import pickle
+import sklearn
+
+@st.cache
+def convert_df(df):
+    # IMPORTANT: Cache the conversion to prevent computation on every rerun
+    return df.to_csv().encode('utf-8_sig')
+
 
 st.subheader("仙台頭痛脳神経クリニックAI頭痛診断-ver.00-")
 st.write("______________________")
@@ -862,3 +870,30 @@ data = [[
         ]]
 df = pd.DataFrame(data,columns=column)
 st.write(df)
+
+if st.button("診断結果を表示"):
+    model = pickle.load(open("./test.pkl","rb"))
+    pred = model.predict(data=df)
+    pred_labels = int(np.argmax(pred,axis=1))
+    
+    if pred_labels == 0:
+        result = "二次性頭痛"
+        st.info('診断結果：' + result, icon="ℹ️")
+    
+    elif pred_labels == 1:
+        result = "片頭痛MOH"
+        st.info('診断結果：' + result, icon="ℹ️")
+    
+    df["診断結果"] = result
+    df["Diagnosis"] = pred_labels
+     
+    csv = convert_df(df)
+    st.download_button(
+        label="CSVデータダウンロード",
+        data=csv,
+        file_name='診断データ.csv',
+        mime='text/csv',
+    )
+        
+
+    
