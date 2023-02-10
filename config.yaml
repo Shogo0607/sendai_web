@@ -7,7 +7,7 @@ credentials:
     sendai:
       email: test
       name: sendai
-      password: 2b$12$IrojrtK6an9Nf2oni/7dIelEFi6Ul6j3uIDy88DcXD/iIBi372YrO
+      password: $2b$12$YUUXW2gdoy09xqvRSNL.suOBWNymg5/aP7WGR0ewMyUc8r7MNpJ8i
 cookie:
   expiry_days: 30
   key: test 
