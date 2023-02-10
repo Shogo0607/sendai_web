@@ -38,5 +38,6 @@ else:
 
         if st.button("このデータに置き換える場合はクリックしてください"):
             df_new.to_csv("df_log.csv",encoding="utf-8_sig",index=False)
+            st.success("データアップロード成功")
 
     
