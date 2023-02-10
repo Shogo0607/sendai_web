@@ -23,16 +23,20 @@ authenticator = stauth.Authenticate(
 )
 
 name, authentication_status, username = authenticator.login('Login', 'main')
-
-st.subheader("仙台頭痛脳神経クリニックAI頭痛診断サポート")
-st.write("______________________")
-df_log = pd.read_csv("df_log.csv",encoding="utf-8_sig")
-st.dataframe(df_log)
-csv = convert_df(df_log)
-st.download_button(
-    label="CSVデータダウンロード",
-    data=csv,
-    file_name='診断データ.csv',
-    mime='text/csv',
-)
+if authentication_status == False:
+    st.error('Username/password is incorrect')
+elif authentication_status == None:
+    st.warning('Please enter your username and password')
+else:
+    st.subheader("仙台頭痛脳神経クリニックAI頭痛診断サポート")
+    st.write("______________________")
+    df_log = pd.read_csv("df_log.csv",encoding="utf-8_sig")
+    st.dataframe(df_log)
+    csv = convert_df(df_log)
+    st.download_button(
+        label="CSVデータダウンロード",
+        data=csv,
+        file_name='診断データ.csv',
+        mime='text/csv',
+    )
     

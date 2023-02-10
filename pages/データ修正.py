@@ -23,16 +23,20 @@ authenticator = stauth.Authenticate(
 )
 
 name, authentication_status, username = authenticator.login('Login', 'main')
+if authentication_status == False:
+    st.error('Username/password is incorrect')
+elif authentication_status == None:
+    st.warning('Please enter your username and password')
+else:
+    st.subheader("仙台頭痛脳神経クリニックAI頭痛診断サポート")
+    st.write("______________________")
+    file = st.file_uploader("置き換えたいデータを入力して下さい。",type=["csv"])
+    if file:
+        df_new = pd.read_csv(file,encoding="utf-8_sig")
+        df_new = df_new.dropna(axis=0)
+        st.dataframe(df_new)
 
-st.subheader("仙台頭痛脳神経クリニックAI頭痛診断サポート")
-st.write("______________________")
-file = st.file_uploader("置き換えたいデータを入力して下さい。",type=["csv"])
-if file:
-    df_new = pd.read_csv(file,encoding="utf-8_sig")
-    df_new = df_new.dropna(axis=0)
-    st.dataframe(df_new)
-
-    if st.button("このデータに置き換える場合はクリックしてください"):
-        df_new.to_csv("df_log.csv",encoding="utf-8_sig",index=False)
+        if st.button("このデータに置き換える場合はクリックしてください"):
+            df_new.to_csv("df_log.csv",encoding="utf-8_sig",index=False)
 
     
