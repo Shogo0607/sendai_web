@@ -936,19 +936,19 @@ else:
     pred = model.predict(data=df)
     pred_labels = np.argmax(pred,axis=1)
 
-    if pred_labels == 0:
+    if int(pred_labels) == 0:
         result = "二次性頭痛"
 
-    elif pred_labels == 1:
+    elif int(pred_labels) == 1:
         result = "片頭痛MOH"
 
-    elif pred_labels == 2:
+    elif int(pred_labels) == 2:
         result = "緊張型頭痛"
 
-    elif pred_labels == 3:
+    elif int(pred_labels) == 3:
         result = "TACs"
 
-    elif pred_labels == 4:
+    elif int(pred_labels) == 4:
         result = "その他一次性頭痛"
 
 
