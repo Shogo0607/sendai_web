@@ -11,7 +11,6 @@ def convert_df(df):
     # IMPORTANT: Cache the conversion to prevent computation on every rerun
     return df.to_csv(index=False).encode('utf-8_sig')
 
-
 def register(df):
     df_log = pd.read_csv("df_log.csv",encoding="utf-8_sig")
     all_data = pd.concat([df_log,df])
@@ -951,7 +950,6 @@ else:
     elif int(pred_labels) == 4:
         result = "その他一次性頭痛"
 
-    print(result)
 
     st.subheader("AI診断結果")
     with st.expander("診断結果を表示"):
@@ -989,6 +987,9 @@ else:
     df["AI後_診断結果"] = second_diag_result
     df.insert(0, '病院名', hospital)
     df.insert(1, '受診日', consultation_date)
+
+    memo = st.text_area("●メモ・ご意見")
+    df["メモ・ご意見"] = memo
     csv = convert_df(df)
     if hospital == "":
         st.warning("病院名を入力してください")
