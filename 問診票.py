@@ -987,8 +987,9 @@ else:
     df["AI後_診断結果"] = second_diag_result
     df.insert(0, '病院名', hospital)
     df.insert(1, '受診日', consultation_date)
-
+    st.write("______________________")
     memo = st.text_area("●メモ・ご意見")
+    st.write("______________________")
     df["メモ・ご意見"] = memo
     csv = convert_df(df)
     if hospital == "":
