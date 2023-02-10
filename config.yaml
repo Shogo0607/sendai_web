@@ -1,0 +1,17 @@
+credentials:
+  usernames:
+    omochi:
+      email: test
+      name: omochi
+      password: $2b$12$KbtTgHf5JuxoBPmolh0Ds.nFADn6QhFz1zQpkBV9CZjTbVTQGDmDS
+    sendai:
+      email: test
+      name: sendai
+      password: 2b$12$IrojrtK6an9Nf2oni/7dIelEFi6Ul6j3uIDy88DcXD/iIBi372YrO
+cookie:
+  expiry_days: 30
+  key: test 
+  name: test
+preauthorized:
+  emails:
+  - test
