@@ -951,11 +951,11 @@ else:
     elif int(pred_labels) == 4:
         result = "その他一次性頭痛"
 
-
+    print(result)
 
     st.subheader("AI診断結果")
     with st.expander("診断結果を表示"):
-        st.info("AI診断結果:"+result,icon="ℹ️")
+        st.success("AI診断結果・・・"+result,icon="ℹ️")
 
     st.write("______________________")
     second_diag_list = ["片頭痛MOH","緊張型頭痛","TACs","その他一次性頭痛","二次性頭痛"]
